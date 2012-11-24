@@ -50,9 +50,10 @@
             attributes.id = "PixelMask";
             attributes.name = "PixelMask";
             attributes.align = "middle";
+            attributes.wmode = "direct";
             swfobject.embedSWF(
                 "PixelMask.swf", "flashContent", 
-                "800", "300", 
+                "720", "200", 
                 swfVersionStr, xiSwfUrlStr, 
                 flashvars, params, attributes);
             // JavaScript enabled so display the flashContent div in case it is not replaced with a swf object.
@@ -77,18 +78,20 @@
         </div>
         
         <noscript>
-            <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="800" height="300" id="PixelMask">
+            <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" width="720" height="200" id="PixelMask">
                 <param name="movie" value="PixelMask.swf" />
                 <param name="quality" value="high" />
                 <param name="bgcolor" value="#ffffff" />
                 <param name="allowScriptAccess" value="sameDomain" />
                 <param name="allowFullScreen" value="true" />
+                <param name="wmode" value="direct" />
                 <!--[if !IE]>-->
-                <object type="application/x-shockwave-flash" data="PixelMask.swf" width="800" height="300">
+                <object type="application/x-shockwave-flash" data="PixelMask.swf" width="720" height="200">
                     <param name="quality" value="high" />
                     <param name="bgcolor" value="#ffffff" />
                     <param name="allowScriptAccess" value="sameDomain" />
                     <param name="allowFullScreen" value="true" />
+                    <param name="wmode" value="direct" />
                 <!--<![endif]-->
                 <!--[if gte IE 6]>-->
                     <p> 
