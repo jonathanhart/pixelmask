@@ -50,7 +50,6 @@ package
 			ps.x = stage.stageWidth/2;
 			ps.y = stage.stageHeight;
 			ps.scaleY = -1;
-			_particleContainer.addChild(ps);
 			Starling.juggler.add(ps);
 			ps.start();
 			
@@ -65,6 +64,7 @@ package
 			_particleContainer.inverted = true;
 			addChild(_particleContainer);
 			_particleContainer.mask = mask;
+			_particleContainer.addChild(ps);
 			
 		}
 		
