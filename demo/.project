@@ -14,21 +14,4 @@
 	<natures>
 		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>[source path] Starling-Extension-Particle-System-src</name>
-			<type>2</type>
-			<location>/Users/jonathanhart/_git/Starling-Extension-Particle-System/src</location>
-		</link>
-		<link>
-			<name>[source path] pixelmask-src</name>
-			<type>2</type>
-			<location>/Users/jonathanhart/pixelmask/src</location>
-		</link>
-		<link>
-			<name>[source path] starling-src</name>
-			<type>2</type>
-			<location>/Users/jonathanhart/adventure38/external/Starling/starling/src</location>
-		</link>
-	</linkedResources>
 </projectDescription>
