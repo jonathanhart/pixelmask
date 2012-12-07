@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<<<<<<< HEAD
 <actionScriptProperties analytics="false" mainApplicationPath="PixelMask.as" projectUUID="8041c52c-e9bd-4ba3-8132-65402d49d83c" version="10">
   <compiler additionalCompilerArguments="-locale en_US" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="true" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" verifyDigests="true" warn="true">
     <compilerSourcePath/>
+=======
+<actionScriptProperties analytics="false" mainApplicationPath="PixelMask.as" projectUUID="8041c52c-e9bd-4ba3-8132-65402d49d83c" version="11">
+  <compiler additionalCompilerArguments="-locale en_US" advancedTelemetry="false" autoRSLOrdering="true" copyDependentFiles="true" fteInMXComponents="false" generateAccessible="false" htmlExpressInstall="true" htmlGenerate="false" htmlHistoryManagement="true" htmlPlayerVersionCheck="true" includeNetmonSwc="false" outputFolderPath="bin-debug" removeUnusedRSL="true" sourceFolderPath="src" strict="true" targetPlayerVersion="0.0.0" useApolloConfig="false" useDebugRSLSwfs="true" useFlashSDK="true" verifyDigests="true" warn="true">
+    <compilerSourcePath>
+      <compilerSourcePathEntry kind="1" linkType="1" path="/Users/jonathanhart/_git/Starling-Extension-Particle-System/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="/Users/jonathanhart/adventure38/external/Starling/starling/src"/>
+      <compilerSourcePathEntry kind="1" linkType="1" path="/Users/jonathanhart/pixelmask/src"/>
+    </compilerSourcePath>
+>>>>>>> bug fix and removing bin-debug
     <libraryPath defaultLinkType="0">
       <libraryPathEntry kind="4" path="">
         <excludedEntries>

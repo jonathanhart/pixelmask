@@ -1,8 +1,6 @@
 package starling.extensions.pixelmask
 {
 	import flash.display3D.Context3DBlendFactor;
-	import flash.geom.Rectangle;
-	
 	import starling.core.RenderSupport;
 	import starling.display.BlendMode;
 	import starling.display.DisplayObject;
@@ -13,6 +11,10 @@ package starling.extensions.pixelmask
 	
 	public class PixelMaskDisplayObject extends DisplayObjectContainer
 	{
+		
+		private static const MASK_MODE_NORMAL:String = "mask";
+		private static const MASK_MODE_INVERTED:String = "maskinverted";
+		
 		private var _mask:DisplayObject;
 		private var _renderTexture:RenderTexture;
 		private var _maskRenderTexture:RenderTexture;
@@ -21,15 +23,14 @@ package starling.extensions.pixelmask
 		private var _image:Image;
 		private var _maskImage:Image;
 		
-		private var _maskRect:Rectangle = new Rectangle();
 		private var _superRenderFlag:Boolean = false;
 		private var _inverted:Boolean = false;
 		
 		public function PixelMaskDisplayObject()
 		{
 			super();			
-			BlendMode.register("mask", Context3DBlendFactor.ZERO, Context3DBlendFactor.SOURCE_ALPHA);
-			BlendMode.register("inversemask", Context3DBlendFactor.ZERO, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
+			BlendMode.register(MASK_MODE_NORMAL, Context3DBlendFactor.ZERO, Context3DBlendFactor.SOURCE_ALPHA);
+			BlendMode.register(MASK_MODE_INVERTED, Context3DBlendFactor.ZERO, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
 		}
 
 		public function get inverted():Boolean
@@ -87,33 +88,23 @@ package starling.extensions.pixelmask
 		private function refreshRenderTextures(e:Event=null) : void
 		{
 			if (_mask) {
-				var newMaskRect:Rectangle = new Rectangle(0, 0, 0, 0);
 				
-				newMaskRect.width = getNearestNextPowerOfTwo(_mask.width);
-				newMaskRect.height = getNearestNextPowerOfTwo(_mask.height);
+				clearRenderTextures();
 				
-				// if we have new dimensions to draw from, 
-				if (_maskRect.width!=newMaskRect.width || _maskRect.height!=newMaskRect.height) {
-					
-					clearRenderTextures();
-					
-					_maskRenderTexture = new RenderTexture(newMaskRect.width, newMaskRect.height, false);
-					_renderTexture = new RenderTexture(newMaskRect.width, newMaskRect.height, false);
-					
-					// create image with the new render texture
-					_image = new Image(_renderTexture);
-					
-					// create image to blit the mask onto
-					_maskImage = new Image(_maskRenderTexture);
-					
-					_maskRect = newMaskRect;
-				}
+				_maskRenderTexture = new RenderTexture(_mask.width, _mask.height, false);
+				_renderTexture = new RenderTexture(_mask.width, _mask.height, false);
 				
+				// create image with the new render texture
+				_image = new Image(_renderTexture);
+				
+				// create image to blit the mask onto
+				_maskImage = new Image(_maskRenderTexture);
+			
 				// set the blending mode to MASK (ZERO, SRC_ALPHA)
 				if (_inverted) {
-					_maskImage.blendMode = "inversemask";
+					_maskImage.blendMode = MASK_MODE_INVERTED;
 				} else {
-					_maskImage.blendMode = "mask";
+					_maskImage.blendMode = MASK_MODE_NORMAL;
 				}
 			}
 		}
@@ -125,7 +116,6 @@ package starling.extensions.pixelmask
 			} else {			
 				if (_mask) {					 
 					_superRenderFlag = true;
-					// draw the mask
 					_maskRenderTexture.draw(_mask);
 					_renderTexture.drawBundled(drawRenderTextures);				
 					_image.render(support, parentAlpha);
@@ -136,25 +126,26 @@ package starling.extensions.pixelmask
 		
 		private function drawRenderTextures() : void
 		{
-			_renderTexture.draw(this);
-			_renderTexture.draw(_maskImage);
-		}
-		
-		private function getNearestNextPowerOfTwo(value:int) : int
-		{
-			if (value==0) {
-				throw new Error ("Trying to round up to the nearest power of 2 with 0 input");
-			}
+			// undo scaling and positionig temporarily because its already applied in this execution stack
+			const oldScaleX:Number = scaleX;
+			const oldScaleY:Number = scaleY;
 			
-			value--;
-			value |= value >> 1;  // handle  2 bit numbers
-			value |= value >> 2;  // handle  4 bit numbers
-			value |= value >> 4;  // handle  8 bit numbers
-			value |= value >> 8;  // handle 16 bit numbers
-			value |= value >> 16; // handle 32 bit numbers
-			value++;
-
-			return value;
+			const oldPosX:Number = x;
+			const oldPosY:Number = y;
+			
+			// reset scale/pos for render texture happiness
+			x = y = 0;
+			scaleX = scaleY = 1;
+			
+			_renderTexture.draw(this);
+			
+			scaleX = oldScaleX;
+			scaleY = oldScaleY;
+			
+			x = oldPosX;
+			y = oldPosY;
+			
+			_renderTexture.draw(_maskImage);
 		}
 	}
 }

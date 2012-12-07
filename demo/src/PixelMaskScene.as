@@ -61,11 +61,13 @@ package
 			
 			// apply the masking here:
 			_particleContainer = new PixelMaskDisplayObject();
-			_particleContainer.inverted = true;
+			
+			// uncomment this to see inverted mode:
+			//_particleContainer.inverted = true;
+			
 			addChild(_particleContainer);
 			_particleContainer.mask = mask;
 			_particleContainer.addChild(ps);
-			
 		}
 		
 		private function handleClick (e:TouchEvent) : void
