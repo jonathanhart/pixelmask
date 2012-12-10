@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>pixelmask</name>
+	<name>PixelMaskProject</name>
 	<comment></comment>
 	<projects>
 	</projects>
@@ -14,4 +14,21 @@
 	<natures>
 		<nature>com.adobe.flexbuilder.project.actionscriptnature</nature>
 	</natures>
+	<linkedResources>
+		<link>
+			<name>[source path] Starling-Extension-Particle-System-src</name>
+			<type>2</type>
+			<location>/Users/jonathan/Documents/git/Starling-Extension-Particle-System/src</location>
+		</link>
+		<link>
+			<name>[source path] pixelmask-src</name>
+			<type>2</type>
+			<location>/Users/jonathan/Documents/git/pixelmask/src</location>
+		</link>
+		<link>
+			<name>[source path] starling-src</name>
+			<type>2</type>
+			<location>/Users/jonathan/Documents/git/Starling-Framework/starling/src</location>
+		</link>
+	</linkedResources>
 </projectDescription>
