@@ -68,6 +68,8 @@ package
 			addChild(_particleContainer);
 			_particleContainer.mask = mask;
 			_particleContainer.addChild(ps);
+			_particleContainer.scaleX = _particleContainer.scaleY = .5;
+			_particleContainer.x = _particleContainer.y = 100; 
 		}
 		
 		private function handleClick (e:TouchEvent) : void

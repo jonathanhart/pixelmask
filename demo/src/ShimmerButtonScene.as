@@ -1,6 +1,7 @@
 package
 {
 	import flash.display.Bitmap;
+	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
 	
 	import starling.animation.Transitions;
@@ -31,6 +32,7 @@ package
 		private var ButtonTexture:Class;
 		
 		private var _shimmer:Image;
+		private var _buttonShimmer:Image;
 		private var _text:TextField;
 		private var _buttonShimmerContainer:PixelMaskDisplayObject;
 		
@@ -62,7 +64,7 @@ package
 			container.addChild(button);
 			
 			// textfield
-			_text = new TextField(button.width, button.height, "pixelmask", "Helvetica Bold", 64, 0x444444);
+			_text = new TextField(button.width, button.height, "PIXELMASK", "Helvetica Bold", 64, 0x4967a8);
 			
 			// a little nudge to center the text vertically
 			_text.y += 5;
@@ -70,12 +72,11 @@ package
 			_buttonShimmerContainer = new PixelMaskDisplayObject();
 			_buttonShimmerContainer.mask = button;
 			
-			var buttonShimmer:Image = Image.fromBitmap(new ShimmerClass());
+			_buttonShimmer = Image.fromBitmap(new ShimmerClass());
 	
-			buttonShimmer.alpha = 0.3;
-			_buttonShimmerContainer.addChild(buttonShimmer);
+			_buttonShimmer.alpha = 0.4;
+			_buttonShimmerContainer.addChild(_buttonShimmer);
 			container.addChild(_text);
-			
 			container.addChild(_buttonShimmerContainer);
 			// shimmer
 			_shimmer = Image.fromBitmap(new ShimmerClass());
@@ -91,8 +92,13 @@ package
 			addChild(container);
 			addEventListener(TouchEvent.TOUCH, handleClick);
 
-
+			setInterval(updateText, 500);
 			fireShimmer();
+		}
+		
+		private function updateText () : void
+		{
+			_text.text = _text.text.substr(1) + _text.text.substr(0,1);
 		}
 		
 		private function fireShimmer() : void
@@ -104,14 +110,14 @@ package
 			function performShimmer() : void {
 				_shimmer.visible = true;
 				_buttonShimmerContainer.visible = true;
-				_shimmer.x = 0;
-				_buttonShimmerContainer.x = 0;
-				var tween:Tween = new Tween(_shimmer, 1+Math.random(), Transitions.EASE_IN_OUT);
+				
+				_shimmer.x = _buttonShimmer.x = -200;
+				var tween:Tween = new Tween(_shimmer, 2.5);
 				tween.animate("x", _text.textBounds.width+200);
 				tween.onComplete = fireShimmer;
 				Starling.juggler.add(tween);
 				
-				var tweenButton:Tween = new Tween(_buttonShimmerContainer, tween.totalTime, Transitions.EASE_IN_OUT);
+				var tweenButton:Tween = new Tween(_buttonShimmer, tween.totalTime);
 				tweenButton.animate("x", _text.textBounds.width+200);
 				Starling.juggler.add(tweenButton);
 			}

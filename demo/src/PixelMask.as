@@ -16,7 +16,7 @@ package
 			stage.align = StageAlign.TOP_LEFT;
 			stage.scaleMode = StageScaleMode.NO_SCALE;
 			
-			_starling = new Starling(PixelMaskScene, stage);
+			_starling = new Starling(ShimmerButtonScene, stage);
 			_starling.start();
 			_starling.showStats = true;
 			_starling.stage.color = 0x222222;
