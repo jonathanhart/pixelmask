@@ -18,8 +18,11 @@ package
 	
 	public class ShimmerButtonScene extends DisplayObjectContainer
 	{
-		
-		// embed configuration XML
+
+		// NOTE ON THIS DEMO:
+		// This is a button shimmer demo that illustrates putting a sheen on any button and animating it.
+		// For extra credit, it also has a shimmer on dynamic text that sits on top of the button
+		// One shimmer is masked to the button, the other is masked to the text. 
 		
 		// embed shimmer texture
 		[Embed(source="../assets/shimmer.png")]
@@ -64,7 +67,7 @@ package
 			container.addChild(button);
 			
 			// textfield
-			_text = new TextField(button.width, button.height, "PIXELMASK", "Helvetica Bold", 64, 0x4967a8);
+			_text = new TextField(button.width, button.height, "PIXELMASK", "Helvetica Bold", 64, 0x222222);
 			
 			// a little nudge to center the text vertically
 			_text.y += 5;
@@ -98,6 +101,7 @@ package
 		
 		private function updateText () : void
 		{
+			// this is just to illustrate that the text is dynamic
 			_text.text = _text.text.substr(1) + _text.text.substr(0,1);
 		}
 		
