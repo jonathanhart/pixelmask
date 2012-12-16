@@ -25,10 +25,13 @@ package starling.extensions.pixelmask
 		
 		private var _superRenderFlag:Boolean = false;
 		private var _inverted:Boolean = false;
+		private var _scaleFactor:Number;
 		
-		public function PixelMaskDisplayObject()
+		public function PixelMaskDisplayObject(scaleFactor:Number=-1)
 		{
 			super();			
+			
+			_scaleFactor = scaleFactor;
 			
 			BlendMode.register(MASK_MODE_NORMAL, Context3DBlendFactor.ZERO, Context3DBlendFactor.SOURCE_ALPHA);
 			BlendMode.register(MASK_MODE_INVERTED, Context3DBlendFactor.ZERO, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
@@ -109,8 +112,8 @@ package starling.extensions.pixelmask
 				
 				clearRenderTextures();
 				
-				_maskRenderTexture = new RenderTexture(_mask.width, _mask.height, false);
-				_renderTexture = new RenderTexture(_mask.width, _mask.height, false);
+				_maskRenderTexture = new RenderTexture(_mask.width, _mask.height, false, _scaleFactor);
+				_renderTexture = new RenderTexture(_mask.width, _mask.height, false, _scaleFactor);
 				
 				// create image with the new render texture
 				_image = new Image(_renderTexture);

@@ -6,7 +6,7 @@ package
 	
 	import starling.core.Starling;
 	
-	[SWF(frameRate=60,width=720,height=200)]
+	[SWF(frameRate=60,width=300,height=200)]
 	public class PixelMask extends Sprite
 	{
 		private var _starling:Starling;

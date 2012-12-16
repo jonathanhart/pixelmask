@@ -39,6 +39,7 @@ package
 		private var _text:TextField;
 		private var _buttonShimmerContainer:PixelMaskDisplayObject;
 		
+		private var _txt:String = "PIXELMASK";
 		public function ShimmerButtonScene()
 		{
 			super();
@@ -67,7 +68,7 @@ package
 			container.addChild(button);
 			
 			// textfield
-			_text = new TextField(button.width, button.height, "PIXELMASK", "Helvetica Bold", 64, 0x222222);
+			_text = new TextField(button.width, button.height, "P", "Helvetica Bold", 64, 0x222222);
 			
 			// a little nudge to center the text vertically
 			_text.y += 5;
@@ -90,8 +91,8 @@ package
 			textMaskContainer.addChild(_shimmer);
 			
 			container.addChild(textMaskContainer);
-			container.x = (stage.stageWidth - container.width)/2;
-			container.y = (stage.stageHeight - container.height)/2;
+			container.x = (stage.stageWidth - button.width)/2;
+			container.y = (stage.stageHeight - button.height)/2;
 			addChild(container);
 			addEventListener(TouchEvent.TOUCH, handleClick);
 
@@ -102,7 +103,8 @@ package
 		private function updateText () : void
 		{
 			// this is just to illustrate that the text is dynamic
-			_text.text = _text.text.substr(1) + _text.text.substr(0,1);
+			_txt = _txt.substr(1) + _txt.substr(0,1);
+			_text.text = _txt.substr(0,1);
 		}
 		
 		private function fireShimmer() : void
