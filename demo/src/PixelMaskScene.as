@@ -62,14 +62,17 @@ package
 			// apply the masking here:
 			_particleContainer = new PixelMaskDisplayObject();
 			
+			// NOTE: to test non-animated mode, assign "false" to the second constructor parameter:
+			//_particleContainer = new PixelMaskDisplayObject(-1, false);
+			
 			// uncomment this to see inverted mode:
 			//_particleContainer.inverted = true;
 			
 			addChild(_particleContainer);
 			_particleContainer.mask = mask;
 			_particleContainer.addChild(ps);
-			_particleContainer.scaleX = _particleContainer.scaleY = .5;
-			_particleContainer.x = _particleContainer.y = 100; 
+			//_particleContainer.scaleX = _particleContainer.scaleY = .5;
+			//_particleContainer.x = _particleContainer.y = 100; 
 		}
 		
 		private function handleClick (e:TouchEvent) : void

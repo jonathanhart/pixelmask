@@ -16,6 +16,11 @@
 	</natures>
 	<linkedResources>
 		<link>
+			<name>[source path] Axel-src</name>
+			<type>2</type>
+			<location>/Users/jonathan/Documents/git/Axel/src</location>
+		</link>
+		<link>
 			<name>[source path] Starling-Extension-Particle-System-src</name>
 			<type>2</type>
 			<location>/Users/jonathan/Documents/git/Starling-Extension-Particle-System/src</location>

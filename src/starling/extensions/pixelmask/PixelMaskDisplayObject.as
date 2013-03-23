@@ -1,6 +1,7 @@
 package starling.extensions.pixelmask
 {
 	import flash.display3D.Context3DBlendFactor;
+	import flash.geom.Matrix;
 	
 	import starling.core.RenderSupport;
 	import starling.core.Starling;
@@ -26,11 +27,14 @@ package starling.extensions.pixelmask
 		private var _superRenderFlag:Boolean = false;
 		private var _inverted:Boolean = false;
 		private var _scaleFactor:Number;
+		private var _isAnimated:Boolean = true;
+		private var _maskRendered:Boolean = false;
 		
-		public function PixelMaskDisplayObject(scaleFactor:Number=-1)
+		public function PixelMaskDisplayObject(scaleFactor:Number=-1, isAnimated:Boolean=true)
 		{
 			super();			
 			
+			_isAnimated = isAnimated;
 			_scaleFactor = scaleFactor;
 			
 			BlendMode.register(MASK_MODE_NORMAL, Context3DBlendFactor.ZERO, Context3DBlendFactor.SOURCE_ALPHA);
@@ -42,6 +46,16 @@ package starling.extensions.pixelmask
 				onContextCreated, false, 0, true);
 		}
 		
+		public function get isAnimated():Boolean
+		{
+			return _isAnimated;
+		}
+
+		public function set isAnimated(value:Boolean):void
+		{
+			_isAnimated = value;
+		}
+
 		override public function dispose():void
 		{
 			clearRenderTextures();
@@ -128,44 +142,39 @@ package starling.extensions.pixelmask
 					_maskImage.blendMode = MASK_MODE_NORMAL;
 				}
 			}
+			_maskRendered = false;
 		}
 		
 		public override function render(support:RenderSupport, parentAlpha:Number):void
 		{
-			if (_superRenderFlag || !_mask) {
-				super.render(support, parentAlpha);
-			} else {			
-				if (_mask) {					 
-					_superRenderFlag = true;
-					_maskRenderTexture.draw(_mask);
-					_renderTexture.drawBundled(drawRenderTextures);				
-					_image.render(support, parentAlpha);
+			if (_isAnimated || (!_isAnimated && !_maskRendered)) {
+				if (_superRenderFlag || !_mask) {
+					super.render(support, parentAlpha);
+				} else {			
+					if (_mask) {					 
+						_maskRenderTexture.draw(_mask);
+						_renderTexture.drawBundled(drawRenderTextures);				
+						_image.render(support, parentAlpha);
+						_maskRendered = true;
+					}
 				}
+			} else {
+				_image.render(support, parentAlpha);
 			}
-			_superRenderFlag = false;
 		}
 		
 		private function drawRenderTextures() : void
 		{
-			// undo scaling and positionig temporarily because its already applied in this execution stack
-			const oldScaleX:Number = scaleX;
-			const oldScaleY:Number = scaleY;
+			// undo scaling and positioning temporarily because its already applied in this execution stack
 			
-			const oldPosX:Number = x;
-			const oldPosY:Number = y;
+			var matrix:Matrix = this.transformationMatrix.clone();
 			
-			// reset scale/pos for render texture happiness
-			x = y = 0;
-			scaleX = scaleY = 1;
-			
+			this.transformationMatrix = new Matrix();
+			_superRenderFlag = true;			
 			_renderTexture.draw(this);
+			_superRenderFlag = false;
 			
-			scaleX = oldScaleX;
-			scaleY = oldScaleY;
-			
-			x = oldPosX;
-			y = oldPosY;
-			
+			this.transformationMatrix = matrix;
 			_renderTexture.draw(_maskImage);
 		}
 	}
