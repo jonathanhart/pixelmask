@@ -149,7 +149,7 @@ package starling.extensions.pixelmask
 			_maskRendered = false;
 		}
 		
-		private function mustUpdateRenderTarget():Boolean
+		private function get mustUpdateRenderTarget():Boolean
 		{
 			var bounds:Rectangle = _mask.getBounds(null);
 			var maskWidth:int = Math.ceil(bounds.width);
