@@ -126,8 +126,12 @@ package starling.extensions.pixelmask
 				
 				clearRenderTextures();
 				
-				_maskRenderTexture = new RenderTexture(_mask.width, _mask.height, false, _scaleFactor);
-				_renderTexture = new RenderTexture(_mask.width, _mask.height, false, _scaleFactor);
+				var bounds:Rectangle = _mask.getBounds(null);
+				var maskWidth:int = Math.ceil(bounds.width);
+				var maskHeight:int = Math.ceil(bounds.height);
+
+				_maskRenderTexture = new RenderTexture(maskWidth, maskHeight, false, _scaleFactor);
+				_renderTexture = new RenderTexture(maskWidth, maskHeight, false, _scaleFactor);
 				
 				// create image with the new render texture
 				_image = new Image(_renderTexture);
@@ -145,13 +149,23 @@ package starling.extensions.pixelmask
 			_maskRendered = false;
 		}
 		
+		private function mustUpdateRenderTarget():Boolean
+		{
+			var bounds:Rectangle = _mask.getBounds(null);
+			var maskWidth:int = Math.ceil(bounds.width);
+			var maskHeight:int = Math.ceil(bounds.height);
+
+			return (maskWidth > _maskRenderTexture.width) || (maskHeight > _maskRenderTexture.height);
+		}
+
 		public override function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			if (_isAnimated || (!_isAnimated && !_maskRendered)) {
 				if (_superRenderFlag || !_mask) {
 					super.render(support, parentAlpha);
 				} else {			
-					if (_mask) {					 
+					if (_mask) {	
+						if (mustUpdateRenderTarget) refreshRenderTextures();
 						_maskRenderTexture.draw(_mask);
 						_renderTexture.drawBundled(drawRenderTextures);				
 						_image.render(support, parentAlpha);
