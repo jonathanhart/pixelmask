@@ -15,6 +15,9 @@ To run the demo, the following are required as linked source paths:
 - Starling (found here: https://github.com/PrimaryFeather/Starling-Framework)
 - Starling Particles Extension (found here: https://github.com/PrimaryFeather/Starling-Extension-Particle-System)
 
+IMPORTANT NOTE:
+Please use the latest version of Starling. There was a crucial performance improvement post 1.4's release that has a significantly positive impact on users of Pixelmask!
+
 Author:
 Jonathan Hart
 jonathan.hart@gmail.com
