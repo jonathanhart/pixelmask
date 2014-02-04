@@ -126,8 +126,12 @@ package starling.extensions.pixelmask
 				
 				clearRenderTextures();
 				
-				_maskRenderTexture = new RenderTexture(_mask.width, _mask.height, false, _scaleFactor);
-				_renderTexture = new RenderTexture(_mask.width, _mask.height, false, _scaleFactor);
+				var bounds:Rectangle = _mask.getBounds(null);
+				var maskWidth:int = Math.ceil(bounds.width);
+				var maskHeight:int = Math.ceil(bounds.height);
+
+				_maskRenderTexture = new RenderTexture(maskWidth, maskHeight, false, _scaleFactor);
+				_renderTexture = new RenderTexture(maskWidth, maskHeight, false, _scaleFactor);
 				
 				// create image with the new render texture
 				_image = new Image(_renderTexture);
@@ -145,13 +149,23 @@ package starling.extensions.pixelmask
 			_maskRendered = false;
 		}
 		
+		private function get mustUpdateRenderTarget():Boolean
+		{
+			var bounds:Rectangle = _mask.getBounds(null);
+			var maskWidth:int = Math.ceil(bounds.width);
+			var maskHeight:int = Math.ceil(bounds.height);
+
+			return (maskWidth > _maskRenderTexture.width) || (maskHeight > _maskRenderTexture.height);
+		}
+
 		public override function render(support:RenderSupport, parentAlpha:Number):void
 		{
 			if (_isAnimated || (!_isAnimated && !_maskRendered)) {
 				if (_superRenderFlag || !_mask) {
 					super.render(support, parentAlpha);
 				} else {			
-					if (_mask) {					 
+					if (_mask) {	
+						if (mustUpdateRenderTarget) refreshRenderTextures();
 						_maskRenderTexture.draw(_mask);
 						_renderTexture.drawBundled(drawRenderTextures);				
 						_image.render(support, parentAlpha);
@@ -163,43 +177,20 @@ package starling.extensions.pixelmask
 			}
 		}
 		
-		private static var _a:Number;
-		private static var _b:Number;
-		private static var _c:Number;
-		private static var _d:Number;
-		private static var _tx:Number;
-		private static var _ty:Number;
-		
+		private static const tempMatrix:Matrix = new Matrix();
+		private static const identityMatrix:Matrix = new Matrix();
+
 		private function drawRenderTextures(object:DisplayObject=null, matrix:Matrix=null, alpha:Number=1.0) : void
 		{
-			_a = this.transformationMatrix.a;
-			_b = this.transformationMatrix.b;
-			_c = this.transformationMatrix.c;
-			_d = this.transformationMatrix.d;
-			
-			_tx = this.transformationMatrix.tx;
-			_ty = this.transformationMatrix.ty;
-			
-			this.transformationMatrix.a = 1;
-			this.transformationMatrix.b = 0;
-			this.transformationMatrix.c = 0;
-			this.transformationMatrix.d = 1;
-			
-			this.transformationMatrix.tx = 0;
-			this.transformationMatrix.ty = 0;
-			
-			_superRenderFlag = true;			
+			tempMatrix.copyFrom(this.transformationMatrix);
+			this.transformationMatrix.copyFrom(identityMatrix);
+
+			_superRenderFlag = true;
 			_renderTexture.draw(this);
 			_superRenderFlag = false;
-			
-			this.transformationMatrix.a = _a;
-			this.transformationMatrix.b = _b;
-			this.transformationMatrix.c = _c;
-			this.transformationMatrix.d = _d;
-			
-			this.transformationMatrix.tx = _tx;
-			this.transformationMatrix.ty = _ty;
-			
+
+			this.transformationMatrix.copyFrom(tempMatrix);
+
 			_renderTexture.draw(_maskImage);
 		}
 	}
