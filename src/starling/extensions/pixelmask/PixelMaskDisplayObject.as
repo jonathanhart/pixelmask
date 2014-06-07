@@ -28,13 +28,13 @@ package starling.extensions.pixelmask
 		private var _inverted:Boolean = false;
 		private var _scaleFactor:Number;
 		private var _isAnimated:Boolean = true;
-		private var _autoUpdate:Boolean = true;
+		private var _autoUpdate:Boolean = false;
 		private var _maskRendered:Boolean = false;
 		
 		public function PixelMaskDisplayObject(
 			scaleFactor:Number=-1, 
 			isAnimated:Boolean=true, 
-			autoUpdate:Boolean=true
+			autoUpdate:Boolean=false
 		)
 		{
 			super();			
