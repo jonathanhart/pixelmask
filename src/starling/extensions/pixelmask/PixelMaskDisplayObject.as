@@ -28,14 +28,20 @@ package starling.extensions.pixelmask
 		private var _inverted:Boolean = false;
 		private var _scaleFactor:Number;
 		private var _isAnimated:Boolean = true;
+		private var _autoUpdate:Boolean = false;
 		private var _maskRendered:Boolean = false;
 		
-		public function PixelMaskDisplayObject(scaleFactor:Number=-1, isAnimated:Boolean=true)
+		public function PixelMaskDisplayObject(
+			scaleFactor:Number=-1, 
+			isAnimated:Boolean=true, 
+			autoUpdate:Boolean=false
+		)
 		{
 			super();			
 			
-			_isAnimated = isAnimated;
 			_scaleFactor = scaleFactor;
+			_isAnimated = isAnimated;
+			_autoUpdate = autoUpdate;
 			
 			BlendMode.register(MASK_MODE_NORMAL, Context3DBlendFactor.ZERO, Context3DBlendFactor.SOURCE_ALPHA);
 			BlendMode.register(MASK_MODE_INVERTED, Context3DBlendFactor.ZERO, Context3DBlendFactor.ONE_MINUS_SOURCE_ALPHA);
@@ -54,6 +60,16 @@ package starling.extensions.pixelmask
 		public function set isAnimated(value:Boolean):void
 		{
 			_isAnimated = value;
+		}
+		
+		public function get autoUpdate():Boolean
+		{
+			return _autoUpdate;
+		}
+
+		public function set autoUpdate(value:Boolean):void
+		{
+			_autoUpdate = value;
 		}
 
 		override public function dispose():void
@@ -202,5 +218,46 @@ package starling.extensions.pixelmask
 			
 			_renderTexture.draw(_maskImage);
 		}
+		
+		override public function addChild(child:DisplayObject):DisplayObject {
+			var r:DisplayObject = super.addChild(child);
+			_autoUpdate && refreshRenderTextures(null);
+			return r;
+		}
+		
+		override public function addChildAt(child:DisplayObject, index:int):DisplayObject {
+			var r:DisplayObject = super.addChildAt(child, index);
+			_autoUpdate && refreshRenderTextures(null);
+			return r;
+		}
+		
+		override public function removeChild(child:DisplayObject, dispose:Boolean=false):DisplayObject {
+			var r:DisplayObject = super.removeChild(child, dispose);
+			_autoUpdate && refreshRenderTextures(null);
+			return r;
+		}
+		
+		override public function removeChildAt(index:int, dispose:Boolean=false):DisplayObject {
+			var r:DisplayObject = super.removeChildAt(index, dispose);
+			_autoUpdate && refreshRenderTextures(null);
+			return r;
+		}
+		
+		override public function setChildIndex(child:DisplayObject, index:int):void {
+			super.setChildIndex(child, index);
+			_autoUpdate && refreshRenderTextures(null);
+		}
+		
+		override public function swapChildren(child1:DisplayObject, child2:DisplayObject):void {
+			super.swapChildren(child1, child2);
+			_autoUpdate && refreshRenderTextures(null);
+		}
+		
+		override public function swapChildrenAt(index1:int, index2:int):void {
+			super.swapChildrenAt(index1, index2);
+			_autoUpdate && refreshRenderTextures(null);
+		}
+		
 	}
+	
 }
