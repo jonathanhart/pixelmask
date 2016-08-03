@@ -10,6 +10,7 @@ package starling.extensions.pixelmask
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.rendering.Painter;
 	import starling.textures.RenderTexture;
 	
 	public class PixelMaskDisplayObject extends DisplayObjectContainer
@@ -79,7 +80,7 @@ package starling.extensions.pixelmask
 			refreshRenderTextures(null);
 		}
 
-		public function set mask(mask:DisplayObject) : void
+		public function set pixelMask(mask:DisplayObject) : void
 		{
 			
 			// clean up existing mask if there is one
@@ -145,21 +146,21 @@ package starling.extensions.pixelmask
 			_maskRendered = false;
 		}
 		
-		public override function render(support:RenderSupport, parentAlpha:Number):void
+		public override function render(support:Painter):void
 		{
 			if (_isAnimated || (!_isAnimated && !_maskRendered)) {
 				if (_superRenderFlag || !_mask) {
-					super.render(support, parentAlpha);
+					super.render(support);
 				} else {			
 					if (_mask) {					 
 						_maskRenderTexture.draw(_mask);
 						_renderTexture.drawBundled(drawRenderTextures);				
-						_image.render(support, parentAlpha);
+						_image.render(support);
 						_maskRendered = true;
 					}
 				}
 			} else {
-				_image.render(support, parentAlpha);
+				_image.render(support);
 			}
 		}
 		
