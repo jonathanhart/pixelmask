@@ -14,7 +14,6 @@ package
 	
 	public class PixelMaskScene extends DisplayObjectContainer
 	{
-		
 		// embed configuration XML
 		[Embed(source="../assets/particle.pex", mimeType="application/octet-stream")]
 		private static const ParticleConfig:Class;
@@ -36,10 +35,9 @@ package
 		
 		private function handleAddedToStage(event:Event) : void
 		{
-
 			// background image
-			var bitmap:Bitmap = new BgTexture();
-			addChild(Image.fromBitmap(bitmap));
+			var bgTexture:Texture = Texture.fromEmbeddedAsset(BgTexture);
+			addChild(new Image(bgTexture));
 			
 			// instantiate embedded objects
 			var psConfig:XML = XML(new ParticleConfig());
@@ -69,7 +67,7 @@ package
 			//_particleContainer.inverted = true;
 			
 			addChild(_particleContainer);
-			_particleContainer.mask = mask;
+			_particleContainer.pixelMask = mask;
 			_particleContainer.addChild(ps);
 			//_particleContainer.scaleX = _particleContainer.scaleY = .5;
 			//_particleContainer.x = _particleContainer.y = 100; 
