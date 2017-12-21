@@ -17,7 +17,7 @@ package
 		{
 			super();
 
-			var heroTexture:Texture = Texture.fromBitmap(new AnimTexture());
+			var heroTexture:Texture = Texture.fromEmbeddedAsset(AnimTexture);
 			var heroXmlData:XML = XML(new AnimData());
 			var heroTextureAtlas:TextureAtlas = 
 				new TextureAtlas(heroTexture, heroXmlData);
@@ -25,8 +25,6 @@ package
 			var _mc:MovieClip = new MovieClip(heroTextureAtlas.getTextures("mask_text"), 18);		 
 			addChild(_mc);
 			Starling.juggler.add(_mc);
-			
-			
 		}
 	}
 }

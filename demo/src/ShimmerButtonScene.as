@@ -1,21 +1,18 @@
 package
 {
-	import flash.display.Bitmap;
 	import flash.utils.setInterval;
 	import flash.utils.setTimeout;
-	
-	import starling.animation.Transitions;
+
 	import starling.animation.Tween;
 	import starling.core.Starling;
-	import starling.display.Button;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.display.Sprite;
 	import starling.events.Event;
-	import starling.events.TouchEvent;
 	import starling.extensions.pixelmask.PixelMaskDisplayObject;
 	import starling.text.TextField;
-	
+	import starling.textures.Texture;
+
 	public class ShimmerButtonScene extends DisplayObjectContainer
 	{
 
@@ -48,53 +45,46 @@ package
 		
 		private function handleAddedToStage(event:Event) : void
 		{
-
 			// background image
-			var bitmap:Bitmap = new BgTexture();
-			addChild(Image.fromBitmap(bitmap));
+			var bgTexture:Texture = Texture.fromEmbeddedAsset(BgTexture);
+			addChild(new Image(bgTexture));
 			
 			// container
 			var container:Sprite = new Sprite();
 
-			
-			// create mask sprite
-			var mask:MaskSprite = new MaskSprite();
-			mask.x = (stage.stageWidth-mask.width)/2;
-			mask.y = (stage.stageHeight-mask.height)/2;
-			
-			
-			var buttonBitmap:Bitmap = new ButtonTexture();
-			var button:Image = Image.fromBitmap(buttonBitmap);
+			var buttonTexture:Texture = Texture.fromEmbeddedAsset(ButtonTexture);
+			var button:Image = new Image(buttonTexture);
 			container.addChild(button);
 			
 			// textfield
-			_text = new TextField(button.width, button.height, "P", "Helvetica Bold", 64, 0x222222);
+			_text = new TextField(button.width, button.height, "P");
+			_text.format.setTo("Helvetica Bold", 64, 0x222222);
 			
 			// a little nudge to center the text vertically
 			_text.y += 5;
 
 			_buttonShimmerContainer = new PixelMaskDisplayObject();
-			_buttonShimmerContainer.mask = button;
-			
-			_buttonShimmer = Image.fromBitmap(new ShimmerClass());
+			_buttonShimmerContainer.pixelMask = button;
+
+			var shimmerTexture:Texture = Texture.fromEmbeddedAsset(ShimmerClass);
+			_buttonShimmer = new Image(shimmerTexture);
 	
 			_buttonShimmer.alpha = 0.4;
 			_buttonShimmerContainer.addChild(_buttonShimmer);
 			container.addChild(_text);
 			container.addChild(_buttonShimmerContainer);
 			// shimmer
-			_shimmer = Image.fromBitmap(new ShimmerClass());
+			_shimmer = new Image(shimmerTexture);
 			
 			// apply the masking here:
 			var textMaskContainer:PixelMaskDisplayObject = new PixelMaskDisplayObject();
-			textMaskContainer.mask = _text;
+			textMaskContainer.pixelMask = _text;
 			textMaskContainer.addChild(_shimmer);
-			
+
 			container.addChild(textMaskContainer);
 			container.x = (stage.stageWidth - button.width)/2;
 			container.y = (stage.stageHeight - button.height)/2;
 			addChild(container);
-			addEventListener(TouchEvent.TOUCH, handleClick);
 
 			setInterval(updateText, 500);
 			fireShimmer();
@@ -113,7 +103,8 @@ package
 			_buttonShimmerContainer.visible = false;
 			setTimeout(performShimmer, 1000);
 			
-			function performShimmer() : void {
+			function performShimmer() : void
+			{
 				_shimmer.visible = true;
 				_buttonShimmerContainer.visible = true;
 				
@@ -127,11 +118,6 @@ package
 				tweenButton.animate("x", _text.textBounds.width+200);
 				Starling.juggler.add(tweenButton);
 			}
-		}
-		
-		private function handleClick (e:TouchEvent) : void
-		{
-			
 		}
 	}
 }
