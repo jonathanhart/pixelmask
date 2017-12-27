@@ -19,7 +19,7 @@ package
 			_starling = new Starling(PixelMaskScene, stage);
 			_starling.start();
 			//_starling.showStats = true;
-			_starling.stage.color = 0x222222;
+			_starling.stage.color = 0xff222222;
 		}
 	}
 }

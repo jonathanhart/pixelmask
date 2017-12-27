@@ -1,17 +1,16 @@
 package
 {
-	import flash.display.Bitmap;
-	
 	import starling.core.Starling;
 	import starling.display.DisplayObjectContainer;
 	import starling.display.Image;
 	import starling.events.Event;
+	import starling.events.Touch;
 	import starling.events.TouchEvent;
 	import starling.events.TouchPhase;
 	import starling.extensions.PDParticleSystem;
 	import starling.extensions.pixelmask.PixelMaskDisplayObject;
 	import starling.textures.Texture;
-	
+
 	public class PixelMaskScene extends DisplayObjectContainer
 	{
 		// embed configuration XML
@@ -36,8 +35,8 @@ package
 		private function handleAddedToStage(event:Event) : void
 		{
 			// background image
-			var bgTexture:Texture = Texture.fromEmbeddedAsset(BgTexture);
-			addChild(new Image(bgTexture));
+			var background:Image = new Image(Texture.fromEmbeddedAsset(BgTexture));
+			addChild(background);
 			
 			// instantiate embedded objects
 			var psConfig:XML = XML(new ParticleConfig());
@@ -50,7 +49,7 @@ package
 			ps.scaleY = -1;
 			Starling.juggler.add(ps);
 			ps.start();
-			
+
 			// create mask sprite
 			var mask:MaskSprite = new MaskSprite();
 			mask.x = (stage.stageWidth-mask.width)/2;
@@ -75,9 +74,8 @@ package
 		
 		private function handleClick (e:TouchEvent) : void
 		{
-			if (e.getTouches(this).length>0&&e.getTouches(this)[0].phase==TouchPhase.ENDED) {
-				_particleContainer.inverted = !_particleContainer.inverted;
-			}
+			var touch:Touch = e.getTouch(this, TouchPhase.ENDED);
+			if (touch) _particleContainer.inverted = !_particleContainer.inverted;
 		}
 	}
 }
